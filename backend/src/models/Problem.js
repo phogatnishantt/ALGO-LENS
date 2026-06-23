@@ -8,7 +8,8 @@ const ProblemSchema=new mongoose.Schema({
 
     problemId:{
         type:String,
-        required:true
+        required:true,
+        unique:true
     },
 
     problemName:{

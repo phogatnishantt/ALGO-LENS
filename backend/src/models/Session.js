@@ -33,9 +33,10 @@ const SessionSchema=new mongoose.Schema({
     },
 
     verdict:{
-        type:String,
-        default:"Pending"
-    },
+    type:String,
+    enum:["Pending","Accepted","Wrong Answer","TLE","MLE","RE"],
+    default:"Pending"
+},
 
     createdAt:{
         type:Date,

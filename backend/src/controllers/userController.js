@@ -10,4 +10,21 @@ const createUser=async(req,res)=>{
     }
 };
 
-module.exports={createUser};
+const getUsers=async(req,res)=>{
+    try{
+        const a=await User.find();
+
+        res.status(200).json({
+            success:true,
+            data:a
+        });
+    }
+    catch(e){
+        res.status(500).json({
+            success:false,
+            message:e.message
+        });
+    }
+};
+
+module.exports={createUser,getUsers};
