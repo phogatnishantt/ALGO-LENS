@@ -6,7 +6,8 @@ const {
     endSession,
     getSessions,
     getSessionById,
-    getUserSessions
+    getUserSessions,
+    getActiveSession
 }=require("../controllers/sessionController");
 
 router.post("/start",startSession);
@@ -14,6 +15,8 @@ router.post("/start",startSession);
 router.post("/end/:id",endSession);
 
 router.get("/",getSessions);
+
+router.get("/active",getActiveSession);
 
 router.get("/:id",getSessionById);
 

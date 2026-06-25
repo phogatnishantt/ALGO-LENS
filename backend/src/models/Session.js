@@ -1,15 +1,19 @@
 const mongoose=require("mongoose");
 
 const SessionSchema=new mongoose.Schema({
-    userId:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"User",
+
+    contestId:{
+        type:String,
         required:true
     },
 
-    problemId:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"Problem",
+    problemIndex:{
+        type:String,
+        required:true
+    },
+
+    problemName:{
+        type:String,
         required:true
     },
 
@@ -33,10 +37,22 @@ const SessionSchema=new mongoose.Schema({
     },
 
     verdict:{
+        type:String,
+        enum:[
+            "Pending",
+            "Accepted",
+            "Wrong Answer",
+            "TLE",
+            "MLE",
+            "RE"
+        ],
+        default:"Pending"
+    },
+    status:{
     type:String,
-    enum:["Pending","Accepted","Wrong Answer","TLE","MLE","RE"],
-    default:"Pending"
-},
+    enum:["ACTIVE","COMPLETED"],
+    default:"ACTIVE"
+    },
 
     createdAt:{
         type:Date,

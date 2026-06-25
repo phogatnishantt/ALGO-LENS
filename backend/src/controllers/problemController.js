@@ -2,14 +2,23 @@ const Problem=require("../models/Problem");
 
 exports.createProblem=async(req,res)=>{
     try{
+
+        console.log("BODY:",req.body);
+
         const a=await Problem.create(req.body);
+
+        console.log("SAVED:",a);
 
         res.status(201).json({
             success:true,
             data:a
         });
+
     }
     catch(e){
+
+        console.log("ERROR:",e);
+
         res.status(500).json({
             success:false,
             message:e.message
