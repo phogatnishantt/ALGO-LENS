@@ -122,3 +122,66 @@ exports.deleteProblem=async(req,res)=>{
         });
     }
 };
+
+exports.getLatestProblem=async(req,res)=>{
+    try{
+
+        const a=await Problem.findOne().sort({
+            createdAt:-1
+        });
+
+        if(!a){
+            return res.status(404).json({
+                success:false,
+                message:"No problem found"
+            });
+        }
+
+        res.status(200).json({
+            success:true,
+            data:a
+        });
+
+    }
+    catch(e){
+
+        res.status(500).json({
+            success:false,
+            message:e.message
+        });
+
+    }
+};
+
+exports.getLatestProblem=async(req,res)=>{
+    try{
+
+        const a=await Problem.findOne().sort({
+            createdAt:-1
+        });
+
+        if(!a){
+
+            return res.status(404).json({
+                success:false,
+                message:"No problem found"
+            });
+
+        }
+
+        res.status(200).json({
+            success:true,
+            data:a
+        });
+
+    }
+
+    catch(e){
+
+        res.status(500).json({
+            success:false,
+            message:e.message
+        });
+
+    }
+};

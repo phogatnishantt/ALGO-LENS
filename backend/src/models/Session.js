@@ -22,11 +22,16 @@ const SessionSchema=new mongoose.Schema({
         required:true
     },
 
+    lastResumeTime:{
+        type:Date,
+        required:true
+    },
+
     endTime:{
         type:Date
     },
 
-    duration:{
+    totalDuration:{
         type:Number,
         default:0
     },
@@ -48,16 +53,25 @@ const SessionSchema=new mongoose.Schema({
         ],
         default:"Pending"
     },
+
     status:{
-    type:String,
-    enum:["ACTIVE","COMPLETED"],
-    default:"ACTIVE"
+        type:String,
+        enum:[
+            "ACTIVE",
+            "PAUSED",
+            "COMPLETED"
+        ],
+        default:"ACTIVE"
     },
 
     createdAt:{
         type:Date,
         default:Date.now
     }
+
 });
 
-module.exports=mongoose.model("Session",SessionSchema);
+module.exports=mongoose.model(
+    "Session",
+    SessionSchema
+);

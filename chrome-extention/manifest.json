@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "AlgoLens",
+  "version": "1.0.0",
+  "description": "Track Codeforces solving sessions",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://codeforces.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://codeforces.com/*"
+      ],
+      "js": [
+        "content.js"
+      ]
+    }
+  ]
+}

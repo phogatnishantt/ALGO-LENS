@@ -1,15 +1,20 @@
 const mongoose=require("mongoose");
 
 const ProblemSchema=new mongoose.Schema({
+
     platform:{
         type:String,
         required:true
     },
 
-    problemId:{
+    contestId:{
         type:String,
-        required:true,
-        unique:true
+        required:true
+    },
+
+    problemIndex:{
+        type:String,
+        required:true
     },
 
     problemName:{
@@ -22,16 +27,26 @@ const ProblemSchema=new mongoose.Schema({
         default:0
     },
 
-    tags:[String],
+    tags:{
+        type:[String],
+        default:[]
+    },
 
     url:{
-        type:String
+        type:String,
+        required:true
+    },
+
+    solved:{
+        type:Boolean,
+        default:false
     },
 
     createdAt:{
         type:Date,
         default:Date.now
     }
+
 });
 
 module.exports=mongoose.model("Problem",ProblemSchema);
