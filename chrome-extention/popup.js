@@ -12,11 +12,16 @@ chrome.tabs.query(
             {type:"GET_PROBLEM"},
             (response)=>{
 
-                console.log("Response:",response);
+                if(chrome.runtime.lastError){
+
+                    p.innerText="❌ "+chrome.runtime.lastError.message;
+                    return;
+
+                }
 
                 if(!response){
 
-                    p.innerText="NO RESPONSE";
+                    p.innerText="❌ No Problem Found";
                     return;
 
                 }
@@ -35,78 +40,76 @@ chrome.tabs.query(
     }
 );
 
-startBtn.addEventListener(
-    "click",
-    async()=>{
+startBtn.onclick=async()=>{
 
-        if(!currentProblem){
+    if(!currentProblem){
 
-            p.innerText="❌ No Problem Found";
-            return;
+        p.innerText="❌ No Problem Found";
+        return;
+
+    }
+
+    const a={
+
+    platform:currentProblem.platform,
+
+    contestId:currentProblem.contestId,
+
+    problemIndex:currentProblem.problemIndex,
+
+    problemName:currentProblem.problemName,
+
+    statement:currentProblem.statement,
+
+    constraints:currentProblem.constraints,
+
+    rating:currentProblem.rating,
+
+    tags:currentProblem.tags,
+
+    url:currentProblem.url,
+
+    sampleTests:currentProblem.sampleTests,
+
+    solved:false
+
+};
+
+    try{
+
+        const r=await fetch(
+            "http://localhost:8000/api/problems",
+            {
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify(a)
+            }
+        );
+
+        const t=await r.text();
+
+        if(r.ok){
+
+            p.innerText="✅ Problem Saved Successfully";
 
         }
 
-        const a={
+        else{
 
-            platform:currentProblem.platform,
-
-            contestId:currentProblem.contestId,
-
-            problemIndex:currentProblem.problemIndex,
-
-            problemName:currentProblem.problemName,
-
-            rating:currentProblem.rating,
-
-            tags:currentProblem.tags,
-
-            url:currentProblem.url,
-
-            solved:false
-
-        };
-
-        console.log("Sending Data:",a);
-
-        try{
-
-            const r=await fetch(
-                "http://localhost:8000/api/problems",
-                {
-                    method:"POST",
-                    headers:{
-                        "Content-Type":"application/json"
-                    },
-                    body:JSON.stringify(a)
-                }
-            );
-
-            console.log("Status:",r.status);
-            console.log("Status Text:",r.statusText);
-
-            const t=await r.text();
-
-            console.log("Response:",t);
-
-            if(r.ok){
-
-                p.innerText="✅ Problem Saved Successfully";
-
-            }
-            else{
-
-                p.innerText="❌ "+t;
-
-            }
-
-        }
-        catch(e){
-
-            console.error("Fetch Error:",e);
-
-            p.innerText="❌ Failed To Save Problem";
+            p.innerText="❌ "+t;
 
         }
 
     }
-);
+
+    catch(e){
+
+        console.error(e);
+
+        p.innerText="❌ Failed To Save Problem";
+
+    }
+
+};

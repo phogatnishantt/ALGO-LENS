@@ -4,9 +4,75 @@ exports.startSession=async(req,res)=>{
 
     try{
 
-        const a=new Date();
+        console.log("Incoming request:",req.body);
 
-        const b=await Session.create({
+        const a=await Session.findOne({
+
+            contestId:req.body.contestId,
+
+            problemIndex:req.body.problemIndex,
+
+            status:"ACTIVE"
+
+        });
+
+        console.log("Found active session:",a);
+
+        if(a){
+
+            return res.status(200).json({
+
+                success:true,
+
+                sessionId:a._id,
+
+                data:a
+
+            });
+
+        }
+
+        const b=await Session.findOne({
+
+            contestId:req.body.contestId,
+
+            problemIndex:req.body.problemIndex,
+
+            status:"PAUSED"
+
+        }).sort({
+
+            createdAt:-1
+
+        });
+
+        console.log("Found paused session:",b);
+
+        if(b){
+
+            b.lastResumeTime=new Date();
+
+            b.status="ACTIVE";
+
+            await b.save();
+
+            return res.status(200).json({
+
+                success:true,
+
+                sessionId:b._id,
+
+                data:b
+
+            });
+
+        }
+
+        console.log("Creating NEW session");
+
+        const c=new Date();
+
+        const d=await Session.create({
 
             contestId:req.body.contestId,
 
@@ -14,9 +80,15 @@ exports.startSession=async(req,res)=>{
 
             problemName:req.body.problemName,
 
-            startTime:a,
+            startTime:c,
 
-            lastResumeTime:a,
+            lastResumeTime:c,
+
+            totalDuration:0,
+
+            attempts:0,
+
+            verdict:"Pending",
 
             status:"ACTIVE"
 
@@ -26,15 +98,17 @@ exports.startSession=async(req,res)=>{
 
             success:true,
 
-            sessionId:b._id,
+            sessionId:d._id,
 
-            data:b
+            data:d
 
         });
 
     }
 
     catch(e){
+
+        console.log(e);
 
         res.status(500).json({
 
@@ -47,13 +121,14 @@ exports.startSession=async(req,res)=>{
     }
 
 };
-
 exports.pauseSession=async(req,res)=>{
 
     try{
 
         const a=await Session.findById(
+
             req.params.id
+
         );
 
         if(!a){
@@ -80,11 +155,9 @@ exports.pauseSession=async(req,res)=>{
 
         }
 
-        const b=new Date();
-
         a.totalDuration+=Math.floor(
 
-            (b-a.lastResumeTime)/1000
+            (new Date()-a.lastResumeTime)/1000
 
         );
 
@@ -121,7 +194,9 @@ exports.resumeSession=async(req,res)=>{
     try{
 
         const a=await Session.findById(
+
             req.params.id
+
         );
 
         if(!a){
@@ -183,7 +258,9 @@ exports.completeSession=async(req,res)=>{
     try{
 
         const a=await Session.findById(
+
             req.params.id
+
         );
 
         if(!a){
@@ -200,11 +277,9 @@ exports.completeSession=async(req,res)=>{
 
         if(a.status==="ACTIVE"){
 
-            const b=new Date();
-
             a.totalDuration+=Math.floor(
 
-                (b-a.lastResumeTime)/1000
+                (new Date()-a.lastResumeTime)/1000
 
             );
 
@@ -248,7 +323,11 @@ exports.getSessions=async(req,res)=>{
 
     try{
 
-        const a=await Session.find();
+        const a=await Session.find().sort({
+
+            createdAt:-1
+
+        });
 
         res.status(200).json({
 
@@ -281,7 +360,9 @@ exports.getSessionById=async(req,res)=>{
     try{
 
         const a=await Session.findById(
+
             req.params.id
+
         );
 
         if(!a){
@@ -326,9 +407,7 @@ exports.getActiveSession=async(req,res)=>{
 
         const a=await Session.findOne({
 
-            status:{
-                $in:["ACTIVE","PAUSED"]
-            }
+            status:"ACTIVE"
 
         }).sort({
 
@@ -342,7 +421,7 @@ exports.getActiveSession=async(req,res)=>{
 
                 success:false,
 
-                message:"No Active Session"
+                message:"No active session"
 
             });
 
@@ -376,7 +455,11 @@ exports.getUserSessions=async(req,res)=>{
 
     try{
 
-        const a=await Session.find();
+        const a=await Session.find().sort({
+
+            createdAt:-1
+
+        });
 
         res.status(200).json({
 

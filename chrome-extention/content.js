@@ -1,5 +1,40 @@
 console.log("ALGOLENS CONTENT LOADED");
 
+function getSampleTests(){
+
+
+    const sampleTests=[];
+
+    const sample=document.querySelector(".sample-test");
+
+    if(!sample){
+        return sampleTests;
+    }
+
+    const inputs=sample.querySelectorAll(".input");
+    const outputs=sample.querySelectorAll(".output");
+
+    for(let i=0;i<Math.min(inputs.length,outputs.length);i++){
+
+        const inPre=inputs[i].querySelector("pre");
+        const outPre=outputs[i].querySelector("pre");
+
+        sampleTests.push({
+
+            title:`Sample ${i+1}`,
+
+            input:inPre?inPre.innerText.trim():"",
+
+            expectedOutput:outPre?outPre.innerText.trim():""
+
+        });
+
+    }
+
+    return sampleTests;
+
+}
+
 function getProblemData(){
 
     console.log("PATH:",window.location.pathname);
@@ -44,9 +79,36 @@ function getProblemData(){
 
     }
 
+    const statementElement = document.querySelector(".problem-statement");
+
+        let statement = "";
+
+        if (statementElement) {
+        statement = statementElement.innerText.trim();
+    }
+
+    let constraints = "";
+
+    const sections = document.querySelectorAll(".problem-statement > div");
+
+    sections.forEach(div => {
+    const h = div.querySelector(".section-title");
+
+    if (
+        h &&
+        h.innerText.toLowerCase().includes("constraints")
+    ) {
+        constraints = div.innerText
+            .replace("Constraints", "")
+            .trim();
+    }
+    });
+
     const tagElements=document.querySelectorAll(
         ".tag-box"
     );
+
+    const sampleTests=getSampleTests();
 
     const tags=[];
 
@@ -77,23 +139,31 @@ function getProblemData(){
 
     });
 
-    return{
+    const data = {
 
-        platform:"Codeforces",
+    platform:"Codeforces",
 
-        contestId:match[1],
+    contestId:match[1],
 
-        problemIndex:match[2],
+    problemIndex:match[2],
 
-        problemName:title,
+    problemName:title,
 
-        rating:rating,
+    statement:statement,
 
-        tags:tags,
+    constraints:constraints,
 
-        url:window.location.href
+    rating:rating,
 
-    };
+    tags:tags,
+
+    url:window.location.href,
+
+    sampleTests:sampleTests
+
+};
+
+    return data;
 
 }
 
