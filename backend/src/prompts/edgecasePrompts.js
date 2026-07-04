@@ -3,7 +3,7 @@ module.exports.buildEdgeCasePrompt = (problem) => {
 return `
 You are an expert Competitive Programming problem setter.
 
-Given the following Codeforces problem, generate exactly THREE additional test cases.
+Given the following Codeforces problem, generate EXACTLY THREE additional test cases.
 
 Problem Name:
 ${problem.problemName}
@@ -14,57 +14,66 @@ ${problem.statement}
 Official Sample Tests:
 ${JSON.stringify(problem.sampleTests, null, 2)}
 
-Generate exactly these three test cases:
+Generate exactly these test cases:
 
 1.
 Title: General Case
-unlockAfter: 0
-
-Purpose:
-A representative testcase that validates the main algorithm.
-
-2.
-Title: Boundary Case
 unlockAfter: 1
 
 Purpose:
-Use minimum or boundary constraints.
+A normal testcase that validates the main algorithm.
+
+2.
+Title: Edge Case
+unlockAfter: 2
+
+Purpose:
+A small boundary testcase that exposes common mistakes.
 
 3.
-Title: Tricky Case
+Title: Corner Case
 unlockAfter: 3
 
 Purpose:
-Design a testcase that is likely to expose common implementation mistakes.
+A tricky testcase that is likely to break incorrect solutions.
 
-Rules:
+IMPORTANT RULES:
 
-- Compute the expected output correctly.
-- Do not reuse the official samples.
+- NEVER reuse the official samples.
+- ALWAYS compute the expected output correctly.
+- Keep every generated testcase SMALL.
+- The total input should NEVER exceed 20 lines.
+- Never generate huge arrays.
+- Never generate stress tests.
+- Never use maximum constraints.
+- Prefer logical edge cases over large inputs.
+- Every testcase should be readable by a human.
 - Return ONLY valid JSON.
-- Do not include markdown.
-- Do not explain anything.
+- Do NOT include markdown.
+- Do NOT include explanations.
+- Do NOT include reasoning.
+- Do NOT output any text before or after the JSON.
 
 Return exactly this schema:
 
 {
   "edgeCases":[
     {
-      "title":"",
-      "description":"",
-      "unlockAfter":0,
-      "input":"",
-      "expectedOutput":""
-    },
-    {
-      "title":"",
+      "title":"General Case",
       "description":"",
       "unlockAfter":1,
       "input":"",
       "expectedOutput":""
     },
     {
-      "title":"",
+      "title":"Edge Case",
+      "description":"",
+      "unlockAfter":2,
+      "input":"",
+      "expectedOutput":""
+    },
+    {
+      "title":"Corner Case",
       "description":"",
       "unlockAfter":3,
       "input":"",

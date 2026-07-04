@@ -4,6 +4,8 @@ const {generateHints,generateEdgeCases} = require("../services/aiService");
 
 exports.createProblem=async(req,res)=>{
 
+    console.log("CREATE PROBLEM API CALLED");
+
     console.log("BODY:",req.body);
 
     try{
@@ -20,19 +22,67 @@ exports.createProblem=async(req,res)=>{
 
         if(old){
 
-            console.log("Returning Cached Problem");
+    if(!old.aiGenerated){
 
-            return res.status(200).json({
+        console.log("Generating missing AI for cached problem...");
 
-                success:true,
+        try{
 
-                cached:true,
+            const [edgeCases,hints]=await Promise.all([
 
-                data:old
+                generateEdgeCases(old),
 
-            });
+                generateHints(
+
+                    old.problemName,
+
+                    old.statement,
+
+                    old.constraints
+
+                )
+
+            ]);
+
+            old.edgeCases=edgeCases.edgeCases;
+
+            old.hints=hints.hints.map((x,i)=>({
+
+                level:i+1,
+
+                text:x
+
+            }));
+
+            old.aiGenerated=true;
+
+            old.generatedAt=new Date();
+
+            await old.save();
 
         }
+
+        catch(e){
+
+            console.error(e);
+
+        }
+
+    }
+
+    console.log("Returning Cached Problem");
+
+    return res.status(200).json({
+
+        success:true,
+
+        cached:true,
+
+        data:old
+
+    });
+
+}
 
         const s=await Session.findOne({
 

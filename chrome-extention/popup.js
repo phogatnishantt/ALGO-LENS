@@ -34,6 +34,8 @@ chrome.tabs.query(
                     2
                 );
 
+                startBtn.click();
+
             }
         );
 
@@ -51,29 +53,29 @@ startBtn.onclick=async()=>{
 
     const a={
 
-    platform:currentProblem.platform,
+        platform:currentProblem.platform,
 
-    contestId:currentProblem.contestId,
+        contestId:currentProblem.contestId,
 
-    problemIndex:currentProblem.problemIndex,
+        problemIndex:currentProblem.problemIndex,
 
-    problemName:currentProblem.problemName,
+        problemName:currentProblem.problemName,
 
-    statement:currentProblem.statement,
+        statement:currentProblem.statement,
 
-    constraints:currentProblem.constraints,
+        constraints:currentProblem.constraints,
 
-    rating:currentProblem.rating,
+        rating:currentProblem.rating,
 
-    tags:currentProblem.tags,
+        tags:currentProblem.tags,
 
-    url:currentProblem.url,
+        url:currentProblem.url,
 
-    sampleTests:currentProblem.sampleTests,
+        sampleTests:currentProblem.sampleTests,
 
-    solved:false
+        solved:false
 
-};
+    };
 
     try{
 
