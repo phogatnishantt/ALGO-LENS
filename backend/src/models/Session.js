@@ -67,7 +67,16 @@ const SessionSchema=new mongoose.Schema({
     createdAt:{
         type:Date,
         default:Date.now
-    }
+    },
+    wrongSubmissions:{
+    type:Number,
+    default:0
+},
+
+successfulRuns:{
+    type:Number,
+    default:0
+}
 
 });
 

@@ -18,21 +18,21 @@ Generate exactly these test cases:
 
 1.
 Title: General Case
-unlockAfter: 1
+unlockAfter: 3
 
 Purpose:
 A normal testcase that validates the main algorithm.
 
 2.
 Title: Edge Case
-unlockAfter: 2
+unlockAfter: 5
 
 Purpose:
 A small boundary testcase that exposes common mistakes.
 
 3.
 Title: Corner Case
-unlockAfter: 3
+unlockAfter: 10
 
 Purpose:
 A tricky testcase that is likely to break incorrect solutions.
@@ -53,6 +53,7 @@ IMPORTANT RULES:
 - Do NOT include explanations.
 - Do NOT include reasoning.
 - Do NOT output any text before or after the JSON.
+- The unlockAfter values MUST be exactly 3, 5 and 10.
 
 Return exactly this schema:
 
@@ -61,21 +62,21 @@ Return exactly this schema:
     {
       "title":"General Case",
       "description":"",
-      "unlockAfter":1,
+      "unlockAfter":3,
       "input":"",
       "expectedOutput":""
     },
     {
       "title":"Edge Case",
       "description":"",
-      "unlockAfter":2,
+      "unlockAfter":5,
       "input":"",
       "expectedOutput":""
     },
     {
       "title":"Corner Case",
       "description":"",
-      "unlockAfter":3,
+      "unlockAfter":10,
       "input":"",
       "expectedOutput":""
     }

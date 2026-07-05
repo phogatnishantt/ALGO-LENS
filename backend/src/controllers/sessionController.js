@@ -486,3 +486,77 @@ exports.getUserSessions=async(req,res)=>{
     }
 
 };
+
+exports.incrementWrongSubmission=async(req,res)=>{
+
+    try{
+
+        const a=await Session.findById(req.params.id);
+
+        if(!a){
+
+            return res.status(404).json({
+                success:false,
+                message:"Session not found"
+            });
+
+        }
+
+        a.wrongSubmissions++;
+
+        await a.save();
+
+        res.status(200).json({
+            success:true,
+            data:a
+        });
+
+    }
+
+    catch(e){
+
+        res.status(500).json({
+            success:false,
+            message:e.message
+        });
+
+    }
+
+};
+
+exports.incrementSuccessfulRun=async(req,res)=>{
+
+    try{
+
+        const a=await Session.findById(req.params.id);
+
+        if(!a){
+
+            return res.status(404).json({
+                success:false,
+                message:"Session not found"
+            });
+
+        }
+
+        a.successfulRuns++;
+
+        await a.save();
+
+        res.status(200).json({
+            success:true,
+            data:a
+        });
+
+    }
+
+    catch(e){
+
+        res.status(500).json({
+            success:false,
+            message:e.message
+        });
+
+    }
+
+};

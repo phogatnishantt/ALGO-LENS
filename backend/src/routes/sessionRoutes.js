@@ -10,7 +10,9 @@ const{
     getSessions,
     getSessionById,
     getUserSessions,
-    getActiveSession
+    getActiveSession,
+    incrementWrongSubmission,
+    incrementSuccessfulRun
 
 }=require("../controllers/sessionController");
 
@@ -21,6 +23,16 @@ router.post("/pause/:id",pauseSession);
 router.post("/resume/:id",resumeSession);
 
 router.post("/complete/:id",completeSession);
+
+router.patch(
+    "/:id/wrong-submission",
+    incrementWrongSubmission
+);
+
+router.patch(
+    "/:id/successful-run",
+    incrementSuccessfulRun
+);
 
 router.get("/",getSessions);
 
