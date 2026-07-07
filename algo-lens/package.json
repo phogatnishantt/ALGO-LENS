@@ -1,0 +1,66 @@
+{
+  "name": "algo-lens",
+  "displayName": "AlgoLens",
+  "description": "Competitive Programming Tracker",
+  "version": "0.0.1",
+  "publisher": "phogatnishantt",
+  "engines": {
+    "vscode": "^1.106.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onCommand:algo-lens.startSession",
+    "onCommand:algo-lens.endSession",
+    "onView:algolensSidebar"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "algo-lens.startSession",
+        "title": "AlgoLens: Start Session"
+      },
+      {
+        "command": "algo-lens.endSession",
+        "title": "AlgoLens: End Session"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "algolens",
+          "title": "AlgoLens",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "algolens": [
+        {
+          "id": "algolensSidebar",
+          "name": "AlgoLens",
+          "type": "webview"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "vscode-test"
+  },
+  "dependencies": {
+    "axios": "^1.18.1"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "22.x",
+    "@types/vscode": "^1.106.0",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^2.5.2",
+    "eslint": "^9.39.3"
+  }
+}

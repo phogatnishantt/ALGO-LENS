@@ -6,6 +6,30 @@ exports.startSession=async(req,res)=>{
 
         console.log("Incoming request:",req.body);
 
+        const x=await Session.findOne({
+    status:"ACTIVE"
+}).sort({
+    createdAt:-1
+});
+
+if(
+    x &&
+    (
+        x.contestId!==req.body.contestId ||
+        x.problemIndex!==req.body.problemIndex
+    )
+){
+
+    x.totalDuration+=Math.floor(
+        (new Date()-x.lastResumeTime)/1000
+    );
+
+    x.status="PAUSED";
+
+    await x.save();
+
+}
+
         const a=await Session.findOne({
 
             contestId:req.body.contestId,
@@ -555,6 +579,72 @@ exports.incrementSuccessfulRun=async(req,res)=>{
         res.status(500).json({
             success:false,
             message:e.message
+        });
+
+    }
+
+};
+
+exports.completeSessionAuto=async(req,res)=>{
+
+    try{
+
+        const a=await Session.findOne({
+
+            contestId:req.body.contestId,
+
+            problemIndex:req.body.problemIndex,
+
+            status:"ACTIVE"
+
+        });
+
+        if(!a){
+
+            return res.status(200).json({
+
+                success:true,
+
+                message:"No active session"
+
+            });
+
+        }
+
+        a.totalDuration+=Math.floor(
+
+            (new Date()-a.lastResumeTime)/1000
+
+        );
+
+        a.endTime=new Date();
+
+        a.status="COMPLETED";
+
+        a.verdict=req.body.verdict||"Accepted";
+
+        a.attempts=req.body.attempts||a.attempts;
+
+        await a.save();
+
+        res.status(200).json({
+
+            success:true,
+
+            data:a
+
+        });
+
+    }
+
+    catch(e){
+
+        res.status(500).json({
+
+            success:false,
+
+            message:e.message
+
         });
 
     }

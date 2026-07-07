@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AlgoLens</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="ambient" aria-hidden="true">
+    <div class="ambient-glow ambient-glow--a"></div>
+    <div class="ambient-glow ambient-glow--b"></div>
+  </div>
+
+  <main class="app">
+
+    <!-- PROBLEM -->
+    <section class="card card--problem" id="problem-card" data-empty="true">
+      <div class="card-scan" aria-hidden="true"></div>
+
+      <div class="problem-empty" id="problem-empty">
+        <div class="empty-ring" aria-hidden="true"></div>
+        <p class="empty-title">Scanning for a problem</p>
+        <p class="empty-sub">AlgoLens will lock on as soon as one loads.</p>
+      </div>
+
+      <div class="problem-content" id="problem-content">
+        <div class="eyebrow-row">
+          <span class="eyebrow" id="problem-platform">—</span>
+          <span class="eyebrow-dot">·</span>
+          <span class="eyebrow mono" id="problem-id">—</span>
+        </div>
+
+        <h1 class="problem-title" id="problem-title">—</h1>
+
+        <div class="difficulty-row">
+          <div class="lens-gauge" id="lens-gauge">
+            <svg viewBox="0 0 84 84" class="lens-gauge-svg">
+              <circle class="lens-gauge-track" cx="42" cy="42" r="36"></circle>
+              <circle class="lens-gauge-fill" id="lens-gauge-fill" cx="42" cy="42" r="36"></circle>
+            </svg>
+            <div class="lens-gauge-center">
+              <span class="lens-gauge-rating mono" id="problem-rating">—</span>
+              <span class="lens-gauge-label">rating</span>
+            </div>
+          </div>
+
+          <div class="difficulty-meta">
+            <span class="difficulty-badge" id="difficulty-badge">—</span>
+            <div class="tags-row" id="tags-row"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SESSION -->
+    <section class="card card--session" id="session-card">
+      <div class="session-top">
+        <div class="status-line">
+          <span class="status-dot" id="status-dot"></span>
+          <span class="status-text" id="status-text">Ready</span>
+        </div>
+        <span class="timer mono" id="timer">00:00:00</span>
+      </div>
+
+      <div class="session-actions" id="session-actions">
+        <button class="btn btn--primary" id="btn-start" type="button">Start session</button>
+        <button class="btn btn--ghost" id="btn-pause" type="button" hidden>Pause</button>
+        <button class="btn btn--primary" id="btn-resume" type="button" hidden>Resume</button>
+        <button class="btn btn--outline" id="btn-complete" type="button" hidden>Complete</button>
+      </div>
+
+      <div class="session-stats" id="session-stats">
+        <div class="stat stat--good">
+          <span class="stat-value mono" id="stat-success">0</span>
+          <span class="stat-label">passed runs</span>
+        </div>
+        <div class="stat stat--bad">
+          <span class="stat-value mono" id="stat-wrong">0</span>
+          <span class="stat-label">wrong subs</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI COACH -->
+    <section class="card card--hints">
+      <div class="card-header">
+        <h2 class="card-heading">AI Coach</h2>
+        <span class="card-subcount" id="hints-count">0 hints</span>
+      </div>
+      <div class="hints-list" id="hints-list">
+        <p class="empty-note" id="hints-empty">Hints will surface here once a problem is locked in.</p>
+      </div>
+    </section>
+
+    <!-- TESTS -->
+    <section class="card card--tests">
+      <div class="card-header">
+        <h2 class="card-heading">Test Cases</h2>
+      </div>
+
+      <div class="test-tabs" role="tablist">
+        <button class="test-tab is-active" id="tab-sample" data-target="sample" type="button" role="tab">
+          Sample <span class="tab-count mono" id="sample-count">0</span>
+        </button>
+        <button class="test-tab" id="tab-edge" data-target="edge" type="button" role="tab">
+          Edge <span class="tab-count mono" id="edge-count">0</span>
+        </button>
+      </div>
+
+      <div class="tests-panel" id="panel-sample">
+        <p class="empty-note" id="sample-empty">No sample tests yet.</p>
+        <div class="tests-list" id="sample-list"></div>
+      </div>
+
+      <div class="tests-panel" id="panel-edge" hidden>
+        <p class="empty-note" id="edge-empty">No edge cases yet.</p>
+        <div class="tests-list" id="edge-list"></div>
+      </div>
+    </section>
+
+  </main>
+
+<script src="script.js"></script>
+</body>
+</html>

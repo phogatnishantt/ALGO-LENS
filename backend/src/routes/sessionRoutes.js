@@ -7,6 +7,7 @@ const{
     pauseSession,
     resumeSession,
     completeSession,
+    completeSessionAuto,
     getSessions,
     getSessionById,
     getUserSessions,
@@ -41,5 +42,10 @@ router.get("/active",getActiveSession);
 router.get("/user/:userId",getUserSessions);
 
 router.get("/:id",getSessionById);
+
+router.post(
+    "/complete-auto",
+    completeSessionAuto
+);
 
 module.exports=router;
