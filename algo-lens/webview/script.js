@@ -225,7 +225,11 @@
   }
 
   function testItemHtml(test, idx, group) {
-    const id = test.id ?? `${group}-${idx}`;
+    if (!test.id) {
+    test.id = `${group}-${idx}`;
+    }
+
+    const id = test.id;
     const record = state.testStatus[id];
     const status = record ? record.status : "idle";
     const meta = statusMeta(status);
@@ -279,12 +283,22 @@
     listEl.innerHTML = tests.map((t, i) => testItemHtml(t, i, group)).join("");
 
     listEl.querySelectorAll(".test-item").forEach((node, i) => {
-      const btn = node.querySelector(".test-run-btn");
-      btn.addEventListener("click", () => {
-        const test = tests[i];
-        vscode.postMessage({ command: "runTest", test });
-      });
+  const btn = node.querySelector(".test-run-btn");
+
+  btn.addEventListener("click", () => {
+
+    const test = {
+      ...tests[i],
+      id: tests[i].id ?? `${group}-${i}`
+    };
+
+    vscode.postMessage({
+      command: "runTest",
+      test
     });
+
+  });
+});
   }
 
   function renderTests(sampleTests, edgeCases) {
@@ -344,13 +358,29 @@
         setTestStatus(msg.id, { status: "running" });
         break;
       case "testResult": {
-        const r = msg.result || {};
-        let status = "wrong";
-        if (r.passed || r.success) status = "passed";
-        else if (r.compileError || r.runtimeError || r.error) status = "error";
-        setTestStatus(r.id, { status, actual: r.actualOutput ?? r.output, error: r.error });
-        break;
-      }
+    const r = msg.result || {};
+    let status;
+
+if (r.compileError || r.runtimeError || r.error) {
+    status = "error";
+} else if (r.passed === true) {
+    status = "passed";
+} else {
+    status = "wrong";
+}
+
+    setTestStatus(r.id, {
+        status,
+        actual:
+            r.actual ??
+            r.actualOutput ??
+            r.output ??
+            "",
+        error: r.error
+    });
+
+    break;
+}
       case "session":
         renderSession(msg);
         break;
